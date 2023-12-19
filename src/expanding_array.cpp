@@ -76,7 +76,7 @@ void ExpandingArray::add(int value) {
 	m_elements[m_size++] = value;
 }
 
-int ExpandingArray::get(size_t i) {
+int ExpandingArray::get(size_t i) const {
 	if (i >= m_size) {
 		throw std::out_of_range("index out of range");
 	}
@@ -92,7 +92,7 @@ int ExpandingArray::set(size_t i, int value) {
 	return old_value;
 }
 
-size_t ExpandingArray::size() {
+size_t ExpandingArray::size() const {
 	return m_size;
 }
 

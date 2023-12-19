@@ -12,9 +12,9 @@ public:
 	ExpandingArray & operator =(ExpandingArray other);
 
 	void add(int value);
-	int get(size_t i);
+	int get(size_t i) const;
 	int set(size_t i, int value);
-	size_t size();
+	size_t size() const;
 	int take(size_t i);
 
 private:
