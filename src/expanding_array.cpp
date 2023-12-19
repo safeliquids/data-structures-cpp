@@ -66,7 +66,7 @@ void ExpandingArray::add(int value) {
 	}
 	if (m_size == m_allocated) {
 		size_t new_allocated = m_allocated * MULTIPLIER;
-		int * new_elements = (int*) std::realloc(m_elements, new_allocated);
+		int * new_elements = (int*) std::realloc(m_elements, sizeof(int) * new_allocated);
 		if (!new_elements) {
 			throw std::runtime_error("out of memory");
 		}
