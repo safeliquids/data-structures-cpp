@@ -80,8 +80,8 @@ int Stack::take() {
 	if (m_top == m_data) {
 		throw std::out_of_range("stack is empty");
 	}
-	int top_value = *m_top;
 	--m_top;
+	int top_value = *m_top;
 	return top_value;
 }
 
@@ -89,5 +89,5 @@ int Stack::get() const {
 	if (m_top == m_data) {
 		throw std::out_of_range("stack is empty");
 	}
-	return *m_top;
+	return *(m_top - 1);
 }
