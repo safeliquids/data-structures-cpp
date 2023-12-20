@@ -17,15 +17,7 @@ ExpandingArray::ExpandingArray(const ExpandingArray & other)
 	m_size(0),
 	m_allocated(0)
 {
-	if (other.m_size == 0) {
-		return;
-	}
-	m_size = other.m_size;
-	m_allocated = other.m_allocated;
-	m_elements = (int*)std::malloc(sizeof(int) * m_allocated);
-	for (size_t i = 0; i < m_size; ++i) {
-		m_elements[i] = other.m_elements[i];
-	}
+	populate_from(other);
 }
 
 ExpandingArray::ExpandingArray(ExpandingArray && other)
@@ -34,9 +26,7 @@ ExpandingArray::ExpandingArray(ExpandingArray && other)
 	m_size(0u),
 	m_allocated(0u)
 {
-	std::swap(m_elements, other.m_elements);
-	std::swap(m_size, other.m_size);
-	std::swap(m_allocated, other.m_allocated);
+	swap_data_with(std::move(other));
 }
 
 ExpandingArray::~ExpandingArray() {
@@ -45,13 +35,17 @@ ExpandingArray::~ExpandingArray() {
 	m_size = m_allocated = 0u;
 }
 
-ExpandingArray & ExpandingArray::operator=(ExpandingArray other) {
-	if (this == &other) {
-		return *this;
+ExpandingArray & ExpandingArray::operator=(const ExpandingArray & other) {
+	if (this != &other) {
+		populate_from(other);
 	}
-	std::swap(m_elements, other.m_elements);
-	std::swap(m_size, other.m_size);
-	std::swap(m_allocated, other.m_allocated);
+	return *this;
+}
+
+ExpandingArray & ExpandingArray::operator=(ExpandingArray && other) {
+	if (this != &other) {
+		swap_data_with(std::move(other));
+	}
 	return *this;
 }
 
@@ -107,3 +101,33 @@ int ExpandingArray::take(size_t i) {
 	// return value that used to be at index i
 	return old_value;
 }
+
+void ExpandingArray::populate_from(const ExpandingArray & other) {
+	if (other.m_size == 0) {
+		m_size = 0;
+		return;
+	}
+
+	if (m_allocated < other.m_allocated) {
+		int * new_elements = (int*)std::realloc(m_elements, sizeof(int) * other.m_allocated);
+		if (!new_elements) {
+			throw std::runtime_error("out of memory");
+		}
+		m_elements = new_elements;
+		m_allocated = other.m_allocated;
+	}
+
+	m_size = other.m_size;
+	for (size_t i = 0; i < m_size; ++i) {
+		m_elements[i] = other.m_elements[i];
+	}
+}
+
+void ExpandingArray::swap_data_with(ExpandingArray && other) {
+	std::swap(m_elements, other.m_elements);
+	std::swap(m_size, other.m_size);
+	std::swap(m_allocated, other.m_allocated);
+}
+
+
+

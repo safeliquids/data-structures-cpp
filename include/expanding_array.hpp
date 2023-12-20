@@ -9,7 +9,8 @@ public:
 	ExpandingArray(const ExpandingArray & other);
 	ExpandingArray(ExpandingArray && other);
 	~ExpandingArray();
-	ExpandingArray & operator =(ExpandingArray other);
+	ExpandingArray & operator=(const ExpandingArray & other);
+	ExpandingArray & operator=(ExpandingArray && other);
 
 	void add(int value);
 	int get(size_t i) const;
@@ -23,6 +24,9 @@ private:
 	size_t m_allocated;
 	static const size_t INITIAL_SIZE = 16;
 	static const size_t MULTIPLIER = 2;
+
+	void populate_from(const ExpandingArray & other);
+	void swap_data_with(ExpandingArray && other);
 };
 
 #endif
