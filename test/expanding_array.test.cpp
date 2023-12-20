@@ -62,6 +62,17 @@ int main() {
 	assert_array(ea2, {3, 9, 5, 1, 2, 6});
 	assert_array(ea3, reference);
 	cout << '.';
+
+	ea = ea3;
+	assert_array(ea, reference);
+	assert_array(ea3, reference);
+	cout << '.';
+
+	assert(ea.take(0) == reference[0]);
+	assert(ea.get(0) == reference.back() && ea.size() == reference.size() - 1);
+	assert_array(ea3, reference);
+	cout << '.';
+
 	cout << endl;
 
 	return 0;
