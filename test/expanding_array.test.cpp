@@ -1,6 +1,5 @@
 #include "expanding_array.hpp"
 #include <cassert>
-#include <cstring>
 #include <iostream>
 #include <vector>
 
