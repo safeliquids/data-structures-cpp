@@ -25,6 +25,7 @@ private:
 	static const size_t INITIAL_SIZE = 16;
 	static const size_t MULTIPLIER = 2;
 
+	void expand_buffer(size_t new_size);
 	void populate_from(const ExpandingArray & other);
 	void swap_data_with(ExpandingArray && other);
 };

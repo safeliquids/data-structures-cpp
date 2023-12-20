@@ -51,21 +51,11 @@ ExpandingArray & ExpandingArray::operator=(ExpandingArray && other) {
 
 void ExpandingArray::add(int value) {
 	if (m_elements == nullptr) {
-		m_elements = (int*) std::malloc(sizeof(int) * INITIAL_SIZE);
-		if (!m_elements) {
-			throw std::runtime_error("out of memory");
-		}
-		m_allocated = INITIAL_SIZE;
+		expand_buffer(INITIAL_SIZE);
 		m_size = 0u;
 	}
 	if (m_size == m_allocated) {
-		size_t new_allocated = m_allocated * MULTIPLIER;
-		int * new_elements = (int*) std::realloc(m_elements, sizeof(int) * new_allocated);
-		if (!new_elements) {
-			throw std::runtime_error("out of memory");
-		}
-		m_allocated = new_allocated;
-		m_elements = new_elements;
+		expand_buffer(m_allocated * MULTIPLIER);
 	}
 	m_elements[m_size++] = value;
 }
@@ -102,6 +92,15 @@ int ExpandingArray::take(size_t i) {
 	return old_value;
 }
 
+void ExpandingArray::expand_buffer(size_t new_size) {
+	int * new_elements = (int*)std::realloc(m_elements, sizeof(int) * new_size);
+	if (!new_elements) {
+		throw std::runtime_error("out of memory");
+	}
+	m_elements = new_elements;
+	m_allocated = new_size;
+}
+
 void ExpandingArray::populate_from(const ExpandingArray & other) {
 	if (other.m_size == 0) {
 		m_size = 0;
@@ -109,12 +108,7 @@ void ExpandingArray::populate_from(const ExpandingArray & other) {
 	}
 
 	if (m_allocated < other.m_allocated) {
-		int * new_elements = (int*)std::realloc(m_elements, sizeof(int) * other.m_allocated);
-		if (!new_elements) {
-			throw std::runtime_error("out of memory");
-		}
-		m_elements = new_elements;
-		m_allocated = other.m_allocated;
+		expand_buffer(other.m_allocated);
 	}
 
 	m_size = other.m_size;
