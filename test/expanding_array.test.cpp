@@ -73,6 +73,13 @@ int main() {
 	assert_array(ea3, reference);
 	cout << '.';
 
+	ea2 = ExpandingArray();
+	assert(ea2.size() == 0);
+	ea2.add(-100);
+	assert_array(ea2, {-100});
+	assert(ea2.take(0) == -100);
+	assert(ea2.size() == 0);
+
 	cout << endl;
 
 	return 0;
