@@ -62,6 +62,7 @@ int main() {
 	assert_array(ea2, {3, 9, 5, 1, 2, 6});
 	assert_array(ea3, reference);
 	cout << '.';
+	cout << endl;
 
 	return 0;
 }
