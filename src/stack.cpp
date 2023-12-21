@@ -91,3 +91,7 @@ int Stack::get() const {
 	}
 	return *(m_top - 1);
 }
+
+bool Stack::is_empty() const {
+	return m_data == m_top ? true : false;
+}

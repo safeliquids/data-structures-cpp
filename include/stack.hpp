@@ -14,7 +14,8 @@ public:
 	void add(int value);
 	int take();
 	int get() const;
-
+	bool is_empty() const;
+	
 private:
 	int* m_data;
 	int* m_top;
