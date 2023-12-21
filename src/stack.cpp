@@ -76,15 +76,6 @@ void Stack::add(int value) {
 	++m_top;
 }
 
-int Stack::take() {
-	if (m_top == m_data) {
-		throw std::out_of_range("stack is empty");
-	}
-	--m_top;
-	int top_value = *m_top;
-	return top_value;
-}
-
 int Stack::get() const {
 	if (m_top == m_data) {
 		throw std::out_of_range("stack is empty");
@@ -94,4 +85,13 @@ int Stack::get() const {
 
 bool Stack::is_empty() const {
 	return m_data == m_top ? true : false;
+}
+
+int Stack::take() {
+	if (m_top == m_data) {
+		throw std::out_of_range("stack is empty");
+	}
+	--m_top;
+	int top_value = *m_top;
+	return top_value;
 }
