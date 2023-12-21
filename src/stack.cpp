@@ -52,23 +52,13 @@ Stack & Stack::operator=(Stack && other) {
 
 void Stack::add(int value) {
 	if (m_allocated == 0) {
-		int * new_data = (int*) std::malloc(sizeof(int) * INITIAL_SIZE);
-		if (new_data == nullptr) {
-			throw std::runtime_error("out of memory");
-		}
-
-		m_allocated = INITIAL_SIZE;
-		m_top = m_data = new_data;
+		resize_data(sizeof(int) * INITIAL_SIZE);
+		m_top = m_data;
 	}
-	const size_t size = m_top - m_data;
+	// here, size is number of bytes, not number of stored integers
+	const size_t size = (m_top - m_data) * sizeof(int);
 	if (size == m_allocated) {
-		size_t new_allocated = m_allocated * MULTIPLIER;
-		int * new_data = (int*) std::realloc(m_data, sizeof(int) * new_allocated);
-		if (new_data == nullptr) {
-			throw std::runtime_error("out of memory");
-		}
-		m_data = new_data;
-		m_allocated = new_allocated;
+		resize_data(m_allocated * MULTIPLIER);
 	}
 	*m_top = value;
 	++m_top;
@@ -101,12 +91,7 @@ void Stack::copy_from(const Stack & other) {
 	}
 
 	if (m_allocated < other.m_allocated) {
-		int * new_data = (int*)std::realloc(m_data, sizeof(int) * other.m_allocated);
-		if (!new_data) {
-			throw std::runtime_error("out of memory");
-		}
-		m_data = new_data;
-		m_allocated = other.m_allocated;
+		resize_data(other.m_allocated);
 	}
 
 	// set top to the beginning of data and populate the array with elements from other
@@ -115,6 +100,15 @@ void Stack::copy_from(const Stack & other) {
 		*m_top = *p;
 		++m_top;
 	}
+}
+
+void Stack::resize_data(size_t new_size) {
+	int * new_data = (int*)std::realloc(m_data, new_size);
+	if (!new_size) {
+		throw std::runtime_error("out of memory");
+	}
+	m_data = new_data;
+	m_allocated = new_size;
 }
 
 void Stack::swap_with(Stack && other) {

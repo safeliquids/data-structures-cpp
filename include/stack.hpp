@@ -25,6 +25,7 @@ private:
 	static const size_t MULTIPLIER = 2;
 
 	void copy_from(const Stack & other);
+	void resize_data(size_t new_size);
 	void swap_with(Stack && other);
 };
 
