@@ -9,7 +9,8 @@ public:
 	Stack(const Stack & other);
 	Stack(Stack && other);
 	~Stack();
-	Stack & operator=(Stack other);
+	Stack & operator=(const Stack & other);
+	Stack & operator=(Stack && other);
 
 	void add(int value);
 	int get() const;
@@ -22,6 +23,10 @@ private:
 	size_t m_allocated;
 	static const size_t INITIAL_SIZE = 16;
 	static const size_t MULTIPLIER = 2;
+
+	void copy_from(const Stack & other);
+	void resize_data(size_t new_size);
+	void swap_with(Stack && other);
 };
 
 #endif
