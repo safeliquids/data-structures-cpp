@@ -22,7 +22,7 @@ private:
 	int * m_elements;
 	size_t m_size;
 	size_t m_allocated;
-	static const size_t INITIAL_SIZE = 16;
+	static const size_t INITIAL_SIZE = 4;
 	static const size_t MULTIPLIER = 2;
 
 	void expand_buffer(size_t new_size);
