@@ -18,9 +18,10 @@ public:
 	int take();
 
 private:
-	int* m_data;
-	int* m_top;
-	size_t m_allocated;
+	int* m_data;         // start of data array
+	int* m_top;          // pointer to a data element after the last one stored
+	                     // (same as m_data if empty)
+	size_t m_allocated;  // number of integers stored in the stack
 	static const size_t INITIAL_SIZE = 16;
 	static const size_t MULTIPLIER = 2;
 

@@ -52,12 +52,10 @@ Stack & Stack::operator=(Stack && other) {
 
 void Stack::add(int value) {
 	if (m_allocated == 0) {
-		resize_data(sizeof(int) * INITIAL_SIZE);
+		resize_data(INITIAL_SIZE);
 		m_top = m_data;
 	}
-	// here, size is number of bytes, not number of stored integers
-	const size_t size = (m_top - m_data) * sizeof(int);
-	if (size == m_allocated) {
+	if (m_top == m_data + m_allocated) {
 		resize_data(m_allocated * MULTIPLIER);
 	}
 	*m_top = value;
@@ -103,7 +101,7 @@ void Stack::copy_from(const Stack & other) {
 }
 
 void Stack::resize_data(size_t new_size) {
-	int * new_data = (int*)std::realloc(m_data, new_size);
+	int * new_data = (int*)std::realloc(m_data, sizeof(int) * new_size);
 	if (!new_size) {
 		throw std::runtime_error("out of memory");
 	}
